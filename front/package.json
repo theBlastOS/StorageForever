@@ -9,17 +9,26 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint"
   },
   "dependencies": {
+    "@0glabs/0g-ts-sdk": "^0.3.1",
+    "@rainbow-me/rainbowkit": "^2.2.8",
+    "ethers": "^6.13.1",
     "next": "15.5.3",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "viem": "^2.37.5",
+    "wagmi": "^2.16.9"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.3",
     "typescript": "^5"
   }
 }
