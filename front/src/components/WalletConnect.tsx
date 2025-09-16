@@ -15,7 +15,7 @@ export function WalletConnect() {
       margin: '20px 0',
       backgroundColor: '#f9f9f9'
     }}>
-      <h3>钱包连接</h3>
+      <h3>Wallet Connection</h3>
 
       <div style={{ marginBottom: '15px' }}>
         <ConnectButton />
@@ -23,8 +23,8 @@ export function WalletConnect() {
 
       {isConnected && (
         <div>
-          <p><strong>地址:</strong> {address}</p>
-          <p><strong>余额:</strong> {balance ? `${balance.formatted} ${balance.symbol}` : '加载中...'}</p>
+          <p><strong>Address:</strong> {address}</p>
+          <p><strong>Balance:</strong> {balance ? `${balance.formatted} ${balance.symbol}` : 'Loading...'}</p>
 
           <div style={{
             marginTop: '15px',
@@ -34,7 +34,7 @@ export function WalletConnect() {
             fontSize: '0.9rem',
             color: '#0c5460'
           }}>
-            📝 连接成功！现在可以在下方上传文件了（需先支付少量费用）
+            📝 Connected successfully! You can now upload files below (payment required first)
           </div>
         </div>
       )}

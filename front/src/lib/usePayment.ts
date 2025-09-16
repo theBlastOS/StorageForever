@@ -5,7 +5,7 @@ import { useAccount, useSendTransaction, useWaitForTransactionReceipt } from 'wa
 import { parseEther } from 'viem'
 
 const PAYMENT_ADDRESS = '0x549e8F736D8DB98b5479160333fcaEb812EAF1fa'
-const PAYMENT_AMOUNT = '0.001' // 0.001 ETH
+const PAYMENT_AMOUNT = '0.001' // 0.001 OG
 
 export function usePayment() {
   const { isConnected } = useAccount()
@@ -26,7 +26,7 @@ export function usePayment() {
 
   const makePayment = async () => {
     if (!isConnected) {
-      throw new Error('钱包未连接')
+      throw new Error('Wallet not connected')
     }
 
     setPaymentPending(true)

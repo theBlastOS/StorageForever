@@ -38,7 +38,7 @@ export default function ImageUpload() {
   const handleNormalUpload = async () => {
     if (!selectedFile) return;
     if (!paymentCompleted) {
-      alert('请先完成支付才能上传文件');
+      alert('Please complete payment before uploading files');
       return;
     }
 
@@ -83,7 +83,7 @@ export default function ImageUpload() {
   const handleKVUpload = async () => {
     if (!selectedFile) return;
     if (!paymentCompleted) {
-      alert('请先完成支付才能上传文件');
+      alert('Please complete payment before uploading files');
       return;
     }
 
@@ -200,9 +200,9 @@ export default function ImageUpload() {
               padding: '1rem',
               marginBottom: '1rem'
             }}>
-              <h4 style={{ margin: '0 0 0.5rem 0', color: '#856404' }}>⚠️ 上传前需要支付</h4>
+              <h4 style={{ margin: '0 0 0.5rem 0', color: '#856404' }}>⚠️ Payment Required Before Upload</h4>
               <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem' }}>
-                上传文件前需要支付 <strong>{paymentAmount} ETH</strong> 到:
+                You need to pay <strong>{paymentAmount} OG</strong> before uploading to:
               </p>
               <p style={{
                 fontSize: '0.8rem',
@@ -229,11 +229,11 @@ export default function ImageUpload() {
                     fontWeight: 'bold'
                   }}
                 >
-                  {paymentPending ? '支付中...' : `支付 ${paymentAmount} ETH`}
+                  {paymentPending ? 'Paying...' : `Pay ${paymentAmount} OG`}
                 </button>
               ) : (
                 <p style={{ color: '#856404', fontSize: '0.9rem', margin: 0 }}>
-                  请先连接钱包
+                  Please connect wallet first
                 </p>
               )}
             </div>
@@ -248,11 +248,11 @@ export default function ImageUpload() {
               marginBottom: '1rem'
             }}>
               <p style={{ margin: '0 0 0.5rem 0', color: '#0c5460' }}>
-                ✅ 支付完成！现在可以上传文件了
+                ✅ Payment completed! You can now upload files
               </p>
               {transactionHash && (
                 <p style={{ fontSize: '0.8rem', margin: 0 }}>
-                  交易哈希: <a
+                  Transaction Hash: <a
                     href={`https://chainscan-galileo.0g.ai/tx/${transactionHash}`}
                     target="_blank"
                     rel="noopener noreferrer"

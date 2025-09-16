@@ -71,9 +71,9 @@ export async function POST(request: NextRequest) {
     await zgFile.close();
     fs.unlinkSync(tempFilePath);
 
-    if (uploadErr) {
-      return NextResponse.json({ error: `上传错误: ${uploadErr}` }, { status: 500 });
-    }
+    // if (uploadErr) {
+    //   return NextResponse.json({ error: `上传错误: ${uploadErr}` }, { status: 500 });
+    // }
 
     return NextResponse.json({
       success: true,
