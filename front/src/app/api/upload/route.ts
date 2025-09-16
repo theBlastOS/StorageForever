@@ -20,21 +20,8 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // 检测是否在Netlify或AWS Lambda环境中
-    const isServerless = process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.VERCEL;
-    const tempDir = isServerless ? '/tmp' : path.join(process.cwd(), 'temp');
-
-    console.log('Environment check:', {
-      NETLIFY: process.env.NETLIFY,
-      AWS_LAMBDA: process.env.AWS_LAMBDA_FUNCTION_NAME,
-      VERCEL: process.env.VERCEL,
-      isServerless,
-      tempDir
-    });
-
-    if (!isServerless && !fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
+    // 直接使用/tmp目录（适用于所有部署环境）
+    const tempDir = '/tmp';
 
     const tempFilePath = path.join(tempDir, file.name);
     fs.writeFileSync(tempFilePath, buffer);

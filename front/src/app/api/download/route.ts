@@ -16,13 +16,8 @@ export async function POST(request: NextRequest) {
 
     const indexer = new Indexer(INDEXER_RPC);
 
-    // 检测是否在Netlify或AWS Lambda环境中
-    const isServerless = process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.VERCEL;
-    const tempDir = isServerless ? '/tmp' : path.join(process.cwd(), 'temp');
-
-    if (!isServerless && !fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
+    // 直接使用/tmp目录（适用于所有部署环境）
+    const tempDir = '/tmp';
 
     const downloadPath = path.join(tempDir, `download_${Date.now()}.tmp`);
 
