@@ -15,8 +15,10 @@ export async function POST(request: NextRequest) {
 
     const indexer = new Indexer(INDEXER_RPC);
 
-    const tempDir = path.join(process.cwd(), 'temp');
-    if (!fs.existsSync(tempDir)) {
+    // 在Netlify环境中使用/tmp目录，本地开发使用temp目录
+    const tempDir = process.env.NETLIFY ? '/tmp' : path.join(process.cwd(), 'temp');
+
+    if (!process.env.NETLIFY && !fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir, { recursive: true });
     }
 
