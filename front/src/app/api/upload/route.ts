@@ -28,9 +28,10 @@ export async function POST(request: NextRequest) {
     fs.writeFileSync(tempFilePath, buffer);
 
     const privateKey = process.env.PRIVATE_KEY;
-    
+
     if (!privateKey) {
-      return NextResponse.json({ error: '未配置私钥' }, { status: 500 });
+      console.error('PRIVATE_KEY environment variable not set');
+      return NextResponse.json({ error: '服务器配置错误：未设置私钥环境变量' }, { status: 500 });
     }
 
     // 确保私钥格式正确
@@ -85,7 +86,10 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Upload error:', error);
     return NextResponse.json(
-      { error: '上传过程中发生错误' },
+      {
+        error: '上传过程中发生错误',
+        details: error instanceof Error ? error.message : '未知错误'
+      },
       { status: 500 }
     );
   }
