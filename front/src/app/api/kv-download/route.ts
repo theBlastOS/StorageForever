@@ -56,11 +56,11 @@ export async function GET(request: NextRequest) {
       });
 
       // 从KV存储读取数据
-      const value = await kvClient.getValue(actualStreamId, ethers.encodeBase64(keyBytes));
+      const value = await kvClient.getValue(actualStreamId, keyBytes);
 
-      if (value && value.length > 0) {
-        // 解码Base64数据
-        const decodedValue = Buffer.from(value, 'base64').toString('utf-8');
+      if (value) {
+        // 根据文档，getValue返回的value可以直接使用
+        const decodedValue = value;
 
         return NextResponse.json({
           success: true,

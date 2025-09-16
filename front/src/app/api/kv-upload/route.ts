@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     //   flowContractABI,
     //   signer
     // );
-    const flowContract = getFlowContract(flowContractAddress, signer);
+    const flowContract = getFlowContract(flowContractAddress, signer as any);
     // 创建Batcher实例 - 修正参数
     const batcher = new Batcher(0, nodes, flowContract, RPC_URL);
 
