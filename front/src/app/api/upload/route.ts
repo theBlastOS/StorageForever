@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 import fs from 'fs';
 import path from 'path';
 
+// 0G 测试网配置
 const RPC_URL = 'https://evmrpc-testnet.0g.ai';
 const INDEXER_RPC = 'https://indexer-storage-testnet-turbo.0g.ai';
 

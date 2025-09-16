@@ -3,6 +3,7 @@ import { Indexer } from '@0glabs/0g-ts-sdk';
 import fs from 'fs';
 import path from 'path';
 
+// 0G 测试网配置
 const INDEXER_RPC = 'https://indexer-storage-testnet-turbo.0g.ai';
 
 export async function POST(request: NextRequest) {
