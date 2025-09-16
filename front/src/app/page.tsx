@@ -3,6 +3,7 @@
 import ImageUpload from '@/components/ImageUpload';
 import ImageDownload from '@/components/ImageDownload';
 import KeyValueStorage from '@/components/KeyValueStorage';
+import { WalletConnect } from '@/components/WalletConnect';
 
 export default function Home() {
   const sectionStyle: React.CSSProperties = {
@@ -23,6 +24,8 @@ export default function Home() {
       }}>
         Storage Forever
       </h1>
+
+      <WalletConnect />
 
       <div style={sectionStyle}>
         <h2 style={{

@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useAccount } from 'wagmi';
+import { usePayment } from '@/lib/usePayment';
 
 interface UploadStatus {
   status: 'idle' | 'uploading' | 'success' | 'error';
@@ -11,6 +13,15 @@ interface UploadStatus {
 }
 
 export default function ImageUpload() {
+  const { isConnected } = useAccount();
+  const {
+    paymentCompleted,
+    paymentPending,
+    transactionHash,
+    makePayment,
+    paymentAmount,
+    paymentAddress
+  } = usePayment();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>({ status: 'idle' });
 
@@ -26,6 +37,10 @@ export default function ImageUpload() {
 
   const handleNormalUpload = async () => {
     if (!selectedFile) return;
+    if (!paymentCompleted) {
+      alert('请先完成支付才能上传文件');
+      return;
+    }
 
     setUploadStatus({ status: 'uploading', message: 'Uploading to 0G Storage (Normal Mode)...', uploadType: 'normal' });
 
@@ -67,6 +82,10 @@ export default function ImageUpload() {
 
   const handleKVUpload = async () => {
     if (!selectedFile) return;
+    if (!paymentCompleted) {
+      alert('请先完成支付才能上传文件');
+      return;
+    }
 
     setUploadStatus({ status: 'uploading', message: 'Uploading to 0G KV Storage...', uploadType: 'kv' });
 
@@ -172,14 +191,89 @@ export default function ImageUpload() {
 
       {selectedFile && (
         <div>
+          {/* Payment Section */}
+          {!paymentCompleted && (
+            <div style={{
+              backgroundColor: '#fff3cd',
+              border: '1px solid #ffeaa7',
+              borderRadius: '8px',
+              padding: '1rem',
+              marginBottom: '1rem'
+            }}>
+              <h4 style={{ margin: '0 0 0.5rem 0', color: '#856404' }}>⚠️ 上传前需要支付</h4>
+              <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem' }}>
+                上传文件前需要支付 <strong>{paymentAmount} ETH</strong> 到:
+              </p>
+              <p style={{
+                fontSize: '0.8rem',
+                wordBreak: 'break-all',
+                backgroundColor: '#fff',
+                padding: '0.5rem',
+                borderRadius: '4px',
+                margin: '0 0 1rem 0'
+              }}>
+                {paymentAddress}
+              </p>
+              {isConnected ? (
+                <button
+                  onClick={makePayment}
+                  disabled={paymentPending}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    backgroundColor: paymentPending ? '#6c757d' : '#ffc107',
+                    color: paymentPending ? '#fff' : '#212529',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: paymentPending ? 'not-allowed' : 'pointer',
+                    fontSize: '0.9rem',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  {paymentPending ? '支付中...' : `支付 ${paymentAmount} ETH`}
+                </button>
+              ) : (
+                <p style={{ color: '#856404', fontSize: '0.9rem', margin: 0 }}>
+                  请先连接钱包
+                </p>
+              )}
+            </div>
+          )}
+
+          {paymentCompleted && (
+            <div style={{
+              backgroundColor: '#d1edff',
+              border: '1px solid #bee5eb',
+              borderRadius: '8px',
+              padding: '1rem',
+              marginBottom: '1rem'
+            }}>
+              <p style={{ margin: '0 0 0.5rem 0', color: '#0c5460' }}>
+                ✅ 支付完成！现在可以上传文件了
+              </p>
+              {transactionHash && (
+                <p style={{ fontSize: '0.8rem', margin: 0 }}>
+                  交易哈希: <a
+                    href={`https://chainscan-galileo.0g.ai/tx/${transactionHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#0c5460' }}
+                  >
+                    {transactionHash}
+                  </a>
+                </p>
+              )}
+            </div>
+          )}
+
           <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
             <button
               onClick={handleNormalUpload}
-              disabled={uploadStatus.status === 'uploading'}
+              disabled={uploadStatus.status === 'uploading' || !paymentCompleted}
               style={{
                 ...buttonStyle,
-                backgroundColor: uploadStatus.status === 'uploading' ? '#6c757d' : '#007bff',
-                marginRight: '1rem'
+                backgroundColor: (uploadStatus.status === 'uploading' || !paymentCompleted) ? '#6c757d' : '#007bff',
+                marginRight: '1rem',
+                cursor: (uploadStatus.status === 'uploading' || !paymentCompleted) ? 'not-allowed' : 'pointer'
               }}
             >
               {uploadStatus.status === 'uploading' && uploadStatus.uploadType === 'normal'
@@ -188,10 +282,11 @@ export default function ImageUpload() {
             </button>
             <button
               onClick={handleKVUpload}
-              disabled={uploadStatus.status === 'uploading'}
+              disabled={uploadStatus.status === 'uploading' || !paymentCompleted}
               style={{
                 ...buttonStyle,
-                backgroundColor: uploadStatus.status === 'uploading' ? '#6c757d' : '#28a745'
+                backgroundColor: (uploadStatus.status === 'uploading' || !paymentCompleted) ? '#6c757d' : '#28a745',
+                cursor: (uploadStatus.status === 'uploading' || !paymentCompleted) ? 'not-allowed' : 'pointer'
               }}
             >
               {uploadStatus.status === 'uploading' && uploadStatus.uploadType === 'kv'
