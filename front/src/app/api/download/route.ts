@@ -15,10 +15,11 @@ export async function POST(request: NextRequest) {
 
     const indexer = new Indexer(INDEXER_RPC);
 
-    // 在Netlify环境中使用/tmp目录，本地开发使用temp目录
-    const tempDir = process.env.NETLIFY ? '/tmp' : path.join(process.cwd(), 'temp');
+    // 检测是否在Netlify或AWS Lambda环境中
+    const isServerless = process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.VERCEL;
+    const tempDir = isServerless ? '/tmp' : path.join(process.cwd(), 'temp');
 
-    if (!process.env.NETLIFY && !fs.existsSync(tempDir)) {
+    if (!isServerless && !fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir, { recursive: true });
     }
 
