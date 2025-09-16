@@ -24,6 +24,7 @@ export default function ImageUpload() {
   } = usePayment();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>({ status: 'idle' });
+  const [isDragging, setIsDragging] = useState(false);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -31,7 +32,38 @@ export default function ImageUpload() {
       setSelectedFile(file);
       setUploadStatus({ status: 'idle' });
     } else {
-      alert('Please select an image file');
+      alert('Please select an image file (JPG, PNG, GIF, WebP, etc.)');
+    }
+  };
+
+  const validateImageFile = (file: File) => {
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+    return validTypes.includes(file.type);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      const file = files[0];
+      if (validateImageFile(file)) {
+        setSelectedFile(file);
+        setUploadStatus({ status: 'idle' });
+      } else {
+        alert('Please drop an image file (JPG, PNG, GIF, WebP, etc.)');
+      }
     }
   };
 
@@ -139,11 +171,13 @@ export default function ImageUpload() {
   };
 
   const containerStyle: React.CSSProperties = {
-    border: '2px dashed #ccc',
+    border: isDragging ? '2px dashed #007bff' : '2px dashed #ccc',
     borderRadius: '8px',
     padding: '2rem',
     textAlign: 'center',
-    marginBottom: '1rem'
+    marginBottom: '1rem',
+    backgroundColor: isDragging ? '#f0f8ff' : 'transparent',
+    transition: 'all 0.3s ease'
   };
 
   const buttonStyle: React.CSSProperties = {
@@ -169,10 +203,15 @@ export default function ImageUpload() {
 
   return (
     <div>
-      <div style={containerStyle}>
+      <div
+        style={containerStyle}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
         <input
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/svg+xml"
           onChange={handleFileSelect}
           id="file-input"
           style={{ display: 'none' }}
@@ -180,11 +219,24 @@ export default function ImageUpload() {
         <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
           {selectedFile ? (
             <div>
-              <p>Selected file: {selectedFile.name}</p>
-              <p>File size: {(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
+              <p>✅ Selected file: {selectedFile.name}</p>
+              <p>📊 File size: {(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
+              <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '0.5rem' }}>
+                Click to select a different file
+              </p>
             </div>
           ) : (
-            <p>Click to select image file</p>
+            <div>
+              <p style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>
+                📁 {isDragging ? 'Drop your image here!' : 'Click to select image file'}
+              </p>
+              <p style={{ fontSize: '0.9rem', color: '#666' }}>
+                💡 Or drag and drop from your desktop/folder
+              </p>
+              <p style={{ fontSize: '0.8rem', color: '#999', marginTop: '0.5rem' }}>
+                Supported formats: JPG, PNG, GIF, WebP, SVG
+              </p>
+            </div>
           )}
         </label>
       </div>
@@ -303,13 +355,22 @@ export default function ImageUpload() {
             border: '1px solid #e9ecef'
           }}>
             <p style={{ margin: '0 0 0.5rem 0' }}>
-              💡 <strong>Choose upload method:</strong>
+              💡 <strong>File Selection Tips:</strong>
+            </p>
+            <p style={{ margin: '0 0 0.3rem 0', fontSize: '0.8rem' }}>
+              🖱️ <strong>From Desktop</strong>: Open file explorer, navigate to Desktop, then drag image directly to the upload area above
+            </p>
+            <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.8rem' }}>
+              📁 <strong>Quick Access</strong>: Use keyboard shortcut (Ctrl+O / Cmd+O) after clicking the upload area for quick file browser
             </p>
             <p style={{ margin: '0 0 0.5rem 0' }}>
-              • <strong>Normal Upload</strong>: Files stored directly, get rootHash, suitable for large files and permanent storage
+              💾 <strong>Upload Methods:</strong>
+            </p>
+            <p style={{ margin: '0 0 0.3rem 0' }}>
+              • <strong>Normal Upload</strong>: Direct storage, get rootHash, for large files and permanent storage
             </p>
             <p style={{ margin: 0 }}>
-              • <strong>KV Upload</strong>: Files converted to Base64 storage, get custom key, suitable for small files and quick access
+              • <strong>KV Upload</strong>: Base64 conversion, get custom key, for small files and quick access
             </p>
           </div>
         </div>
