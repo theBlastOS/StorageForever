@@ -1,8 +1,11 @@
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
 [build]
   base = "front"
   command = "rm -rf node_modules package-lock.json && npm install && npm run build"
-  publish = "out"
 
 [build.environment]
   NODE_VERSION = "20.19.5"
   NPM_VERSION = "10.8.2"
+  NPM_FLAGS = "--legacy-peer-deps"
