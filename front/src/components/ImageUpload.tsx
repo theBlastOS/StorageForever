@@ -20,14 +20,14 @@ export default function ImageUpload() {
       setSelectedFile(file);
       setUploadStatus({ status: 'idle' });
     } else {
-      alert('请选择图片文件');
+      alert('Please select an image file');
     }
   };
 
   const handleNormalUpload = async () => {
     if (!selectedFile) return;
 
-    setUploadStatus({ status: 'uploading', message: '正在上传到0G Storage (普通模式)...', uploadType: 'normal' });
+    setUploadStatus({ status: 'uploading', message: 'Uploading to 0G Storage (Normal Mode)...', uploadType: 'normal' });
 
     const formData = new FormData();
     formData.append('image', selectedFile);
@@ -44,7 +44,7 @@ export default function ImageUpload() {
       if (response.ok) {
         setUploadStatus({
           status: 'success',
-          message: '普通上传成功！',
+          message: 'Normal upload successful!',
           hash: String(result.rootHash || result.hash || ''),
           txHash: String(result.txHash || ''),
           uploadType: 'normal'
@@ -52,14 +52,14 @@ export default function ImageUpload() {
       } else {
         setUploadStatus({
           status: 'error',
-          message: result.error || '普通上传失败',
+          message: result.error || 'Normal upload failed',
           uploadType: 'normal'
         });
       }
     } catch {
       setUploadStatus({
         status: 'error',
-        message: '普通上传过程中发生错误',
+        message: 'Error occurred during normal upload',
         uploadType: 'normal'
       });
     }
@@ -68,7 +68,7 @@ export default function ImageUpload() {
   const handleKVUpload = async () => {
     if (!selectedFile) return;
 
-    setUploadStatus({ status: 'uploading', message: '正在上传到0G KV Storage...', uploadType: 'kv' });
+    setUploadStatus({ status: 'uploading', message: 'Uploading to 0G KV Storage...', uploadType: 'kv' });
 
     // 将文件转换为Base64或者使用文件名作为key
     const reader = new FileReader();
@@ -95,7 +95,7 @@ export default function ImageUpload() {
         if (response.ok) {
           setUploadStatus({
             status: 'success',
-            message: 'KV存储上传成功！',
+            message: 'KV storage upload successful!',
             hash: String(result.key || result.rootHash || ''),
             txHash: String(result.txHash || ''),
             uploadType: 'kv'
@@ -103,14 +103,14 @@ export default function ImageUpload() {
         } else {
           setUploadStatus({
             status: 'error',
-            message: result.error || 'KV上传失败',
+            message: result.error || 'KV upload failed',
             uploadType: 'kv'
           });
         }
       } catch {
         setUploadStatus({
           status: 'error',
-          message: 'KV上传过程中发生错误',
+          message: 'Error occurred during KV upload',
           uploadType: 'kv'
         });
       }
@@ -161,11 +161,11 @@ export default function ImageUpload() {
         <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
           {selectedFile ? (
             <div>
-              <p>已选择文件: {selectedFile.name}</p>
-              <p>文件大小: {(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
+              <p>Selected file: {selectedFile.name}</p>
+              <p>File size: {(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
             </div>
           ) : (
-            <p>点击选择图片文件</p>
+            <p>Click to select image file</p>
           )}
         </label>
       </div>
@@ -183,8 +183,8 @@ export default function ImageUpload() {
               }}
             >
               {uploadStatus.status === 'uploading' && uploadStatus.uploadType === 'normal'
-                ? '普通上传中...'
-                : '普通上传 (文件存储)'}
+                ? 'Normal uploading...'
+                : 'Normal Upload (File Storage)'}
             </button>
             <button
               onClick={handleKVUpload}
@@ -195,8 +195,8 @@ export default function ImageUpload() {
               }}
             >
               {uploadStatus.status === 'uploading' && uploadStatus.uploadType === 'kv'
-                ? 'KV上传中...'
-                : 'KV上传 (键值存储)'}
+                ? 'KV uploading...'
+                : 'KV Upload (Key-Value Storage)'}
             </button>
           </div>
           <div style={{
@@ -208,13 +208,13 @@ export default function ImageUpload() {
             border: '1px solid #e9ecef'
           }}>
             <p style={{ margin: '0 0 0.5rem 0' }}>
-              💡 <strong>选择上传方式：</strong>
+              💡 <strong>Choose upload method:</strong>
             </p>
             <p style={{ margin: '0 0 0.5rem 0' }}>
-              • <strong>普通上传</strong>：文件直接存储，获得rootHash，适合大文件和永久存储
+              • <strong>Normal Upload</strong>: Files stored directly, get rootHash, suitable for large files and permanent storage
             </p>
             <p style={{ margin: 0 }}>
-              • <strong>KV上传</strong>：文件转Base64存储，获得自定义key，适合小文件和快速访问
+              • <strong>KV Upload</strong>: Files converted to Base64 storage, get custom key, suitable for small files and quick access
             </p>
           </div>
         </div>
@@ -225,7 +225,7 @@ export default function ImageUpload() {
           <p>{uploadStatus.message}</p>
           {uploadStatus.hash && (
             <p>
-              {uploadStatus.uploadType === 'normal' ? '文件根哈希' : 'KV存储键名'}:
+              {uploadStatus.uploadType === 'normal' ? 'File Root Hash' : 'KV Storage Key'}:
               <code style={{ backgroundColor: 'white', padding: '2px 4px', borderRadius: '2px', marginLeft: '0.5rem' }}>
                 {uploadStatus.hash}
               </code>
@@ -233,7 +233,7 @@ export default function ImageUpload() {
           )}
           {uploadStatus.txHash && (
             <p>
-              交易哈希:
+              Transaction Hash:
               <code style={{ backgroundColor: 'white', padding: '2px 4px', borderRadius: '2px', marginLeft: '0.5rem' }}>
                 {uploadStatus.txHash}
               </code>
@@ -242,8 +242,8 @@ export default function ImageUpload() {
           {uploadStatus.status === 'success' && (
             <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '0.5rem' }}>
               ✅ {uploadStatus.uploadType === 'normal'
-                ? '文件已成功存储到0G分布式文件系统'
-                : '数据已成功存储到0G Key-Value存储系统'}
+                ? 'File successfully stored to 0G distributed file system'
+                : 'Data successfully stored to 0G Key-Value storage system'}
             </p>
           )}
         </div>

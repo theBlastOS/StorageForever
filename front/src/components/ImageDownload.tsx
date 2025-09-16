@@ -14,11 +14,11 @@ export default function ImageDownload() {
 
   const handleDownload = async () => {
     if (!rootHash.trim()) {
-      alert('请输入rootHash');
+      alert('Please enter rootHash');
       return;
     }
 
-    setDownloadStatus({ status: 'downloading', message: '正在从0G Storage下载...' });
+    setDownloadStatus({ status: 'downloading', message: 'Downloading from 0G Storage...' });
     setImageUrl('');
 
     try {
@@ -36,19 +36,19 @@ export default function ImageDownload() {
         setImageUrl(url);
         setDownloadStatus({
           status: 'success',
-          message: '下载成功！'
+          message: 'Download successful!'
         });
       } else {
         const result = await response.json();
         setDownloadStatus({
           status: 'error',
-          message: result.error || '下载失败'
+          message: result.error || 'Download failed'
         });
       }
     } catch {
       setDownloadStatus({
         status: 'error',
-        message: '下载过程中发生错误'
+        message: 'Error occurred during download'
       });
     }
   };
@@ -129,10 +129,10 @@ export default function ImageDownload() {
   return (
     <div>
       <div style={containerStyle}>
-        <h3 style={{ marginTop: 0, color: '#28a745' }}>从0G Storage拉取图片</h3>
+        <h3 style={{ marginTop: 0, color: '#28a745' }}>Download Images from 0G Storage</h3>
         <input
           type="text"
-          placeholder="输入rootHash (例如: 0x1234567890abcdef...)"
+          placeholder="Enter rootHash (e.g.: 0x1234567890abcdef...)"
           value={rootHash}
           onChange={(e) => setRootHash(e.target.value)}
           style={inputStyle}
@@ -146,14 +146,14 @@ export default function ImageDownload() {
               backgroundColor: downloadStatus.status === 'downloading' ? '#6c757d' : '#28a745'
             }}
           >
-            {downloadStatus.status === 'downloading' ? '下载中...' : '下载图片'}
+            {downloadStatus.status === 'downloading' ? 'Downloading...' : 'Download Image'}
           </button>
           {(imageUrl || rootHash) && (
             <button
               onClick={handleClear}
               style={clearButtonStyle}
             >
-              清空
+              Clear
             </button>
           )}
         </div>
@@ -167,7 +167,7 @@ export default function ImageDownload() {
 
       {imageUrl && (
         <div style={imageContainerStyle}>
-          <p style={{ margin: '0 0 1rem 0', color: '#666' }}>下载的图片：</p>
+          <p style={{ margin: '0 0 1rem 0', color: '#666' }}>Downloaded image:</p>
           <img src={imageUrl} alt="Downloaded from 0G Storage" style={imageStyle} />
           <div style={{ marginTop: '1rem' }}>
             <a
@@ -183,7 +183,7 @@ export default function ImageDownload() {
                 fontSize: '0.9rem'
               }}
             >
-              保存到本地
+              Save to Local
             </a>
           </div>
         </div>

@@ -21,7 +21,7 @@ export default function Home() {
         fontSize: '2.5rem',
         color: '#333'
       }}>
-        0G Storage 数据管理
+        Storage Forever
       </h1>
 
       <div style={sectionStyle}>
@@ -33,7 +33,7 @@ export default function Home() {
           borderBottom: '2px solid #007bff',
           paddingBottom: '0.5rem'
         }}>
-          📤 图片上传到0G Storage
+          📤 Image Upload to 0G Storage
         </h2>
         <ImageUpload />
       </div>
@@ -47,7 +47,7 @@ export default function Home() {
           borderBottom: '2px solid #28a745',
           paddingBottom: '0.5rem'
         }}>
-          📥 从0G Storage拉取图片
+          📥 Download Images from 0G Storage
         </h2>
         <ImageDownload />
       </div>
@@ -61,7 +61,7 @@ export default function Home() {
           borderBottom: '2px solid #dc3545',
           paddingBottom: '0.5rem'
         }}>
-          🗃️ Key-Value 数据存储
+          🗃️ Key-Value Data Storage
         </h2>
         <KeyValueStorage />
       </div>
@@ -75,13 +75,13 @@ export default function Home() {
         color: '#6c757d'
       }}>
         <p style={{ margin: '0 0 0.5rem 0' }}>
-          💡 <strong>使用说明：</strong>
+          💡 <strong>Usage Instructions:</strong>
         </p>
         <ul style={{ margin: 0, paddingLeft: '1.2rem' }}>
-          <li><strong>普通文件上传：</strong>将图片直接存储到0G分布式文件系统，获得rootHash用于下载</li>
-          <li><strong>KV图片上传：</strong>将图片转换为Base64格式存储到Key-Value系统，适合小文件和快速访问</li>
-          <li><strong>纯Key-Value存储：</strong>支持任意键值对数据，适用于配置、设置等结构化数据</li>
-          <li>所有数据都永久存储在0G分布式网络中，确保数据的安全性和高可用性</li>
+          <li><strong>Normal File Upload:</strong> Store images directly to 0G distributed file system, obtain rootHash for download</li>
+          <li><strong>KV Image Upload:</strong> Convert images to Base64 format and store in Key-Value system, suitable for small files and quick access</li>
+          <li><strong>Pure Key-Value Storage:</strong> Support arbitrary key-value pair data, suitable for configuration, settings and other structured data</li>
+          <li>All data is permanently stored in the 0G distributed network, ensuring data security and high availability</li>
         </ul>
       </div>
     </main>

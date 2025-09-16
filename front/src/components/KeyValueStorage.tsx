@@ -20,11 +20,11 @@ export default function KeyValueStorage() {
 
   const handleUpload = async () => {
     if (!key || !value) {
-      alert('请填写Key和Value');
+      alert('Please fill in Key and Value');
       return;
     }
 
-    setUploadStatus({ status: 'processing', message: '正在存储到0G Key-Value Storage...' });
+    setUploadStatus({ status: 'processing', message: 'Storing to 0G Key-Value Storage...' });
 
     try {
       const response = await fetch('/api/kv-upload', {
@@ -44,30 +44,30 @@ export default function KeyValueStorage() {
       if (response.ok) {
         setUploadStatus({
           status: 'success',
-          message: '数据存储成功！',
+          message: 'Data storage successful!',
           txHash: result.txHash
         });
       } else {
         setUploadStatus({
           status: 'error',
-          message: result.error || '存储失败'
+          message: result.error || 'Storage failed'
         });
       }
     } catch (error) {
       setUploadStatus({
         status: 'error',
-        message: '存储过程中发生错误'
+        message: 'Error occurred during storage'
       });
     }
   };
 
   const handleDownload = async () => {
     if (!downloadKey) {
-      alert('请填写要查询的Key');
+      alert('Please fill in the Key to query');
       return;
     }
 
-    setDownloadStatus({ status: 'processing', message: '正在从0G Key-Value Storage获取数据...' });
+    setDownloadStatus({ status: 'processing', message: 'Retrieving data from 0G Key-Value Storage...' });
 
     try {
       const params = new URLSearchParams({
@@ -81,19 +81,19 @@ export default function KeyValueStorage() {
       if (response.ok) {
         setDownloadStatus({
           status: 'success',
-          message: '数据获取成功！',
+          message: 'Data retrieval successful!',
           value: result.value
         });
       } else {
         setDownloadStatus({
           status: 'error',
-          message: result.error || '获取失败'
+          message: result.error || 'Retrieval failed'
         });
       }
     } catch (error) {
       setDownloadStatus({
         status: 'error',
-        message: '获取过程中发生错误'
+        message: 'Error occurred during retrieval'
       });
     }
   };
@@ -148,35 +148,35 @@ export default function KeyValueStorage() {
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem' }}>
       <h2>0G Key-Value Storage</h2>
       <p style={{ color: '#666', marginBottom: '2rem' }}>
-        Key-Value Storage支持数据更新，适用于配置数据、用户设置等场景。
-        基于0G Batcher实现，数据将永久存储在0G分布式网络中。
+        Key-Value Storage supports data updates, suitable for configuration data, user settings and other scenarios.
+        Based on 0G Batcher implementation, data will be permanently stored in the 0G distributed network.
       </p>
 
       {/* 数据存储部分 */}
       <div style={sectionStyle}>
-        <h3>存储数据</h3>
+        <h3>Store Data</h3>
 
         <div style={{ marginBottom: '1rem' }}>
           <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
-            Key (键):
+            Key:
           </label>
           <input
             type="text"
             value={key}
             onChange={(e) => setKey(e.target.value)}
-            placeholder="输入数据的键名"
+            placeholder="Enter data key name"
             style={inputStyle}
           />
         </div>
 
         <div style={{ marginBottom: '1rem' }}>
           <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
-            Value (值):
+            Value:
           </label>
           <textarea
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="输入要存储的数据值"
+            placeholder="Enter data value to store"
             rows={4}
             style={{ ...inputStyle, resize: 'vertical' }}
           />
@@ -184,17 +184,17 @@ export default function KeyValueStorage() {
 
         <div style={{ marginBottom: '1rem' }}>
           <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
-            Stream ID (可选):
+            Stream ID (Optional):
           </label>
           <input
             type="text"
             value={streamId}
             onChange={(e) => setStreamId(e.target.value)}
-            placeholder="留空使用默认Stream ID"
+            placeholder="Leave blank to use default Stream ID"
             style={inputStyle}
           />
           <small style={{ color: '#666' }}>
-            Stream ID用于数据分组，留空将使用默认值
+            Stream ID is used for data grouping, leave blank to use default value
           </small>
         </div>
 
@@ -206,7 +206,7 @@ export default function KeyValueStorage() {
             backgroundColor: uploadStatus.status === 'processing' ? '#6c757d' : '#007bff'
           }}
         >
-          {uploadStatus.status === 'processing' ? '存储中...' : '存储到0G KV Storage'}
+          {uploadStatus.status === 'processing' ? 'Storing...' : 'Store to 0G KV Storage'}
         </button>
 
         {uploadStatus.message && (
@@ -214,9 +214,9 @@ export default function KeyValueStorage() {
             <p><strong>{uploadStatus.message}</strong></p>
             {uploadStatus.txHash && (
               <div>
-                <p>交易哈希: <code style={{ backgroundColor: 'white', padding: '2px 4px', borderRadius: '2px' }}>{uploadStatus.txHash}</code></p>
+                <p>Transaction Hash: <code style={{ backgroundColor: 'white', padding: '2px 4px', borderRadius: '2px' }}>{uploadStatus.txHash}</code></p>
                 <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '0.5rem' }}>
-                  ✅ 数据已成功存储到0G分布式网络
+                  ✅ Data successfully stored to 0G distributed network
                 </p>
               </div>
             )}
@@ -226,34 +226,34 @@ export default function KeyValueStorage() {
 
       {/* 数据获取部分 */}
       <div style={sectionStyle}>
-        <h3>获取数据</h3>
+        <h3>Retrieve Data</h3>
 
         <div style={{ marginBottom: '1rem' }}>
           <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
-            Key (键):
+            Key:
           </label>
           <input
             type="text"
             value={downloadKey}
             onChange={(e) => setDownloadKey(e.target.value)}
-            placeholder="输入要查询的键名"
+            placeholder="Enter key name to query"
             style={inputStyle}
           />
         </div>
 
         <div style={{ marginBottom: '1rem' }}>
           <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
-            Stream ID (可选):
+            Stream ID (Optional):
           </label>
           <input
             type="text"
             value={downloadStreamId}
             onChange={(e) => setDownloadStreamId(e.target.value)}
-            placeholder="留空使用默认Stream ID"
+            placeholder="Leave blank to use default Stream ID"
             style={inputStyle}
           />
           <small style={{ color: '#666' }}>
-            应与存储时使用的Stream ID保持一致
+            Should match the Stream ID used during storage
           </small>
         </div>
 
@@ -265,7 +265,7 @@ export default function KeyValueStorage() {
             backgroundColor: downloadStatus.status === 'processing' ? '#6c757d' : '#28a745'
           }}
         >
-          {downloadStatus.status === 'processing' ? '获取中...' : '从0G KV Storage获取'}
+          {downloadStatus.status === 'processing' ? 'Retrieving...' : 'Retrieve from 0G KV Storage'}
         </button>
 
         {downloadStatus.message && (
@@ -273,7 +273,7 @@ export default function KeyValueStorage() {
             <p><strong>{downloadStatus.message}</strong></p>
             {downloadStatus.value && (
               <div>
-                <p><strong>获取到的值:</strong></p>
+                <p><strong>Retrieved value:</strong></p>
                 <pre style={{
                   backgroundColor: 'white',
                   padding: '1rem',
@@ -288,7 +288,7 @@ export default function KeyValueStorage() {
             )}
             {downloadStatus.status === 'error' && (
               <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '0.5rem' }}>
-                💡 提示: KV读取功能目前正在完善中，请稍后再试
+                💡 Tip: KV reading function is currently being improved, please try again later
               </p>
             )}
           </div>
